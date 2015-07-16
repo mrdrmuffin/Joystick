@@ -43,9 +43,9 @@ const device_descriptor code DEVICEDESC =
 {
    18,                                 // bLength
    0x01,                               // bDescriptorType
-   0x1001,                             // bcdUSB
-   0x00,                               // bDeviceClass
-   0x00,                               // bDeviceSubClass
+   0x1101,                             // bcdUSB
+   0x03,                               // bDeviceClass
+   0x03,                               // bDeviceSubClass
    0x00,                               // bDeviceProtocol
    EP0_PACKET_SIZE,                    // bMaxPacketSize0
    0xC410,                             // idVendor
@@ -83,15 +83,15 @@ const hid_configuration_descriptor code HIDCONFIGDESC =
    0x00,                               // bAlternateSetting
    0x01,                               // bNumEndpoints
    0x03,                               // bInterfaceClass (3 = HID)
-   0x01,                               // bInterfaceSubClass
-   0x02,                               // bInterfaceProcotol
-   0x00                                // iInterface
+   0x00,                               // bInterfaceSubClass
+   0x01,                               // bInterfaceProcotol
+   0x03                                // iInterface
 },
 
 { // class_descriptor hid_descriptor
 	0x09,	                              // bLength
 	0x21,	                              // bDescriptorType
-	0x0101,	                           // bcdHID
+	0x1101,	                           // bcdHID
 	0x00,	                              // bCountryCode
 	0x01,	                              // bNumDescriptors
 	0x22,                               // bDescriptorType
@@ -123,7 +123,7 @@ const hid_configuration_descriptor code HIDCONFIGDESC =
 
 const hid_report_descriptor code HIDREPORTDESC =
 {
-    0x05, 0x01,                        // Usage Page (Generic Desktop)
+    /*0x05, 0x01,                        // Usage Page (Generic Desktop)
     0x09, 0x04,                        // Usage (Joystick)
     0xA1, 0x01,                        // Collection (Application)
     0xA1, 0x00,                        //   Collection (Physical)
@@ -139,7 +139,47 @@ const hid_report_descriptor code HIDREPORTDESC =
     0x75, 0x00,                        //     Report Size (7)
     0x81, 0x01,                        //     Input (Constant) for padding
     0xC0,                              //   End Collection (Physical)
-    0xC0                               // End Collection (Application)
+    0xC0                               // End Collection (Application)*/
+
+        0x05, 0x01, // Usage Page, Generic Desktop
+                0x09, 0x05, // Usage, Gamepad
+                0xA1, 0x01, // Collection Application
+                    // Buttons (0x0A)
+                    0x05, 0x09, // Usage page button
+                    0x19, 0x01, // Usage Min, Button 1 (10 digital Buttons)
+                    0x29, 0x0A, // Usage Max, Button 10
+                    0x95, 0x0A, // Report Count, 10
+                    0x75, 0x01, // Report Size, 1
+                    0x81, 0x02, // Input, Variable
+
+                    // Button Padding
+                    0x75, 0x06, // Report Size 6
+                    0x95, 0x01, // Report Count 1
+                    0x81, 0x03, // Input (constant)
+
+                    // DPAD
+                    0x05, 0x01, // Usage Page, Generic Desktop
+                    0x09, 0x39, // Usage, Hat Switch (DPAD)
+                    0x15, 0x01, // Logical Min (1)
+                    0x25, 0x08, // Logical Max (8)
+                    0x35, 0x00, // Physical Min (0)
+                    0x46, 0x3B, 0x10, // Physical Max (315)
+                    0x66, 14, 00, // Unit
+                    0x75, 0x04,  // Report Size (4)
+                    0x95, 0x01,  // Report Count (1)
+                    0x81, 0x42,  // Input (Variable, Null)
+
+                    // DPAD Padding
+                    0x75, 0x04, // Report Size 4
+                    0x95, 0x01, // Report Count 1
+                    0x81, 0x03, // Input (constant)
+
+                    // Alignment padding (DWORD alignment)
+                    0x75, 0x08, // Report Size 8
+                    0x95, 0x01, // Report Count 1
+                    0x81, 0x03, // Input (constant)
+
+                0xC0 // End Collection
 };
 
 #define STR0LEN 4

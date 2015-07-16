@@ -110,23 +110,85 @@ BufferStructure IN_BUFFER, OUT_BUFFER;
 //
 // ****************************************************************************
 
+static const U8 DPAD_MAPPING[] = {
+        0,  // [0] Not pressed
+        1,  // [1] Up
+        5,  // [2] Down
+        0,  // [3] Up and Down - Invalid
+        3,  // [4] Left
+        2,  // [5] Left and up
+        4,  // [6] Left and down
+        1,  // [7] Left, down, up - Left
+        7,  // [8] Right
+        8,  // [9] Right, up
+        6,  // [A] Right, Down
+        7,  // [B] Right, down, up - Right
+        4,  // [C] Right, Left - Invalid
+        1,  // [D] Right, Left, Up - Up
+        5,  // [E] Right, Left, Down - Down
+        0  //  [F] Right, Left, Down, Up - Invalid
+    };
+
+static const U8 BTN_MAPPING[] = {
+        0,  // [0] Not pressed
+        16,  // [1] Up
+        1,  // [2] Down
+        2,  // [3] Up and Down - Invalid
+        4,  // [4] Left
+        8,  // [5] Left and up
+        32,  // [6] Left and down
+        64,  // [7] Left, down, up - Left
+        128,  // [8] Right
+        8,  // [9] Right, up
+        6,  // [A] Right, Down
+        7,  // [B] Right, down, up - Right
+        4,  // [C] Right, Left - Invalid
+        1,  // [D] Right, Left, Up - Up
+        5,  // [E] Right, Left, Down - Down
+        0  //  [F] Right, Left, Down, Up - Invalid
+    };
+
 void IN_Report(void) {
+    //UU16 buttons = 0;
+    U8 btnkey = ~P2 & 0x1; //(~P2 & 0xF) | (~P1<<4);
 
 	static unsigned char pack = 0x01;
 	pack = pack << 1;
 	if (pack == 0) {
 		pack = 0x01;
 	}
+
+	btnkey |= (~P1 & 0x40) >> 5; // Button B,  2
+	btnkey |= (~P2 & 0x02) << 1; // Button X,  3
+	btnkey |= (~P1 & 0x80) >> 4; // Button Y,  4
+	btnkey |= (~P1 & 0x04) << 2; // Button LB, 5
+	btnkey |= (~P1 & 0x20);      // Button RB, 6
+	btnkey |= (~P2 & 0x08) << 3; // Button BK, 7
+	btnkey |= (~P2 & 0x04) << 5; // Button ST, 8
+
 	// save left mouse button stat to bit 0 of first data byte
-	IN_PACKET[0] = ~P2;
-	IN_PACKET[1] = ~P1>>2;
+	IN_PACKET[0] = btnkey;
+	IN_PACKET[1] = (~P1 & 0x18)>>3;
+	IN_PACKET[2] = DPAD_MAPPING[~P2>>4];
 
 	// point IN_BUFFER pointer to data packet and set
 	// IN_BUFFER length to transmit correct report size
 	IN_BUFFER.Ptr = IN_PACKET;
-	IN_BUFFER.Length = 2;
+	IN_BUFFER.Length = 4;
 
 }
+
+//UU16 RemapButtons(U16 buttons)
+//{
+//    UU16 val = 0;
+//
+//    for(int i = 0; i < 11; i++)
+//    {
+//        val |= BTN_MAPPING[buttons & i];
+//    }
+//
+//    return val;
+//}
 
 // ****************************************************************************
 // For Output Reports:

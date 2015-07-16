@@ -33,7 +33,7 @@
 extern signed char MOUSE_VECTOR;
 extern U8 MOUSE_AXIS;
 extern U8 MOUSE_BUTTON;
-extern U8 IN_PACKET[2];
+extern U8 IN_PACKET[4];
 
 #define X_Axis 0
 #define Y_Axis 1

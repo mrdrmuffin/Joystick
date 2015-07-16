@@ -148,8 +148,8 @@ typedef code struct {
 }
 hid_configuration_descriptor;
 
-#define HID_REPORT_DESCRIPTOR_SIZE 0x0020
-#define HID_REPORT_DESCRIPTOR_SIZE_LE 0x2000
+#define HID_REPORT_DESCRIPTOR_SIZE 0x003B
+#define HID_REPORT_DESCRIPTOR_SIZE_LE 0x3B00
 
 typedef code U8 hid_report_descriptor[HID_REPORT_DESCRIPTOR_SIZE];
 
