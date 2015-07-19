@@ -39,6 +39,10 @@
 // Descriptor Declarations
 //-----------------------------------------------------------------------------
 
+#define VENDOR 2    // 0 is default
+                    // 1 is Street Fighter
+                    // 2 is 360
+
 const device_descriptor code DEVICEDESC =
 {
    18,                                 // bLength
@@ -48,8 +52,16 @@ const device_descriptor code DEVICEDESC =
    0x03,                               // bDeviceSubClass
    0x00,                               // bDeviceProtocol
    EP0_PACKET_SIZE,                    // bMaxPacketSize0
+#if VENDOR == 1
+   0x3807,                             // idVendor
+   0x3847,                             // idProduct
+#elif VENDOR == 2
+   0x045E,                             // idVendor
+   0x028E,                             // idProduct
+#else
    0xC410,                             // idVendor
    0xB987,                             // idProduct
+#endif
    0x0000,                             // bcdDevice
    0x01,                               // iManufacturer
    0x02,                               // iProduct

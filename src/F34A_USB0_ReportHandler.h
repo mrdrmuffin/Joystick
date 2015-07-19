@@ -51,3 +51,6 @@ extern void Setup_OUT_BUFFER(void);
 extern BufferStructure IN_BUFFER, OUT_BUFFER;
 
 #endif
+
+void BuildDInputReport();
+void BuildXInputReport();
