@@ -67,6 +67,7 @@ signed char MOUSE_VECTOR;
 U8 MOUSE_AXIS;
 U8 MOUSE_BUTTON;
 U8 IN_PACKET[4];
+U8 JOYSTICK_STYLE;
 
 //-----------------------------------------------------------------------------
 // Local Variable Declarations

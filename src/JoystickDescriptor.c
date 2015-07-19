@@ -39,10 +39,6 @@
 // Descriptor Declarations
 //-----------------------------------------------------------------------------
 
-#define VENDOR 2    // 0 is default
-                    // 1 is Street Fighter
-                    // 2 is 360
-
 const device_descriptor code DEVICEDESC =
 {
    18,                                 // bLength

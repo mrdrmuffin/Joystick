@@ -34,6 +34,10 @@
 
 #include "compiler_defs.h"
 
+#define VENDOR 2    // 0 is default
+                    // 1 is Street Fighter
+                    // 2 is 360
+
 // WORD type definition, for KEIL Compiler
 #ifndef _WORD_DEF_                     // Compiler Specific, written for
                                        // Little Endian

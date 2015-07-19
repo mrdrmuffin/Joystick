@@ -111,22 +111,22 @@ BufferStructure IN_BUFFER, OUT_BUFFER;
 // ****************************************************************************
 
 static const U8 DPAD_MAPPING[] = {
-        0,  // [0] Not pressed
-        1,  // [1] Up
-        5,  // [2] Down
-        0,  // [3] Up and Down - Invalid
-        3,  // [4] Left
-        2,  // [5] Left and up
-        4,  // [6] Left and down
-        1,  // [7] Left, down, up - Left
-        7,  // [8] Right
-        8,  // [9] Right, up
-        6,  // [A] Right, Down
-        7,  // [B] Right, down, up - Right
-        4,  // [C] Right, Left - Invalid
-        1,  // [D] Right, Left, Up - Up
-        5,  // [E] Right, Left, Down - Down
-        0  //  [F] Right, Left, Down, Up - Invalid
+        0,  // 0 - None
+        1,  // 1 - Up
+        5,  // 2 - Down
+        0,  // 3 - Up + Down - Invalid
+        3,  // 4 - Left
+        2,  // 5 - Left + Up
+        4,  // 6 - Left + Down
+        0,  // 7 - Left + Up + Down - Invalid
+        7,  // 8 - Right
+        8,  // 9 - Right + Up
+        6,  // A - Right + Down
+        0,  // B - Right + Down + Up - Invalid
+        0,  // C - Right + Left - Invalid
+        0,  // D - Right + Left + Up - Invalid
+        0,  // E - Right + Left + Down - Invalid
+        0  //  F - Right + Left + Down + Up - Invalid
     };
 
 void IN_Report(void) {
@@ -137,7 +137,14 @@ void IN_Report(void) {
 		pack = 0x01;
 	}
 
-	BuildDInputReport();
+	if(JOYSTICK_STYLE == 0xFF)
+	{
+	    BuildXInputReport();
+	}
+    else
+	{
+        BuildDInputReport();
+	}
 
 	// point IN_BUFFER pointer to data packet and set
 	// IN_BUFFER length to transmit correct report size
@@ -163,6 +170,33 @@ void BuildXInputReport()
     IN_PACKET[1] = (~P1 & 0x18)>>3;
     IN_PACKET[2] = DPAD_MAPPING[~P2>>4];
 }
+
+//void BuildXInputReport()
+//{
+//    U8 packet0 = 0;
+//    U8 packet1 = 0;
+//
+//    packet0 |= (~P2 & 0x02) << 1; // Button X,  3
+//    packet0 |= (~P1 & 0x80) >> 4; // Button Y,  4
+//
+//    packet0 |= (~P1 & 0x40) >> 5; // Button B,  2
+//    packet0 |= (~P2 & 0x01);      // Button A,  1
+//
+//    packet0 |= (~P1 & 0x04) << 2; // Button LB, 5
+//    packet0 |= (~P1 & 0x20);      // Button RB, 6
+//
+//
+//    packet0 |= (~P1 & 0x08) << 3; // Button LT, 8
+//    packet0 |= (~P1 & 0x10) << 3; // Button RT, 7
+//
+//    packet1 |= (~P2 & 0x08) >> 3; // Button Select, 9
+//    packet1 |= (~P2 & 0x04) >> 1; // Button Start, 10
+//
+//    // save left mouse button stat to bit 0 of first data byte
+//    IN_PACKET[0] = packet0;
+//    IN_PACKET[1] = packet1;
+//    IN_PACKET[2] = DPAD_MAPPING[~P2>>4];
+//}
 
 void BuildDInputReport()
 {
