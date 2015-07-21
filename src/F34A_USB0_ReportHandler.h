@@ -54,3 +54,4 @@ extern BufferStructure IN_BUFFER, OUT_BUFFER;
 
 void BuildDInputReport();
 void BuildXInputReport();
+void BuildRLInputReport();

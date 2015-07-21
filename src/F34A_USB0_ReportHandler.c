@@ -137,13 +137,17 @@ void IN_Report(void) {
 		pack = 0x01;
 	}
 
-	if(JOYSTICK_STYLE == 0xFF)
+	if(JOYSTICK_STYLE == 0xFB)
 	{
-	    BuildXInputReport();
+	    BuildDInputReport();
+	}
+	else if(JOYSTICK_STYLE == 0xF7)
+	{
+	    BuildRLInputReport();
 	}
     else
 	{
-        BuildDInputReport();
+        BuildXInputReport();
 	}
 
 	// point IN_BUFFER pointer to data packet and set
@@ -209,6 +213,33 @@ void BuildDInputReport()
 
     btnkey |= (~P1 & 0x40) >> 5; // Button B,  2
     btnkey |= (~P2 & 0x01) << 2; // Button A,  3
+
+    btnkey |= (~P1 & 0x04) << 2; // Button LB, 5
+    btnkey |= (~P1 & 0x20);      // Button RB, 6
+
+
+    btnkey |= (~P1 & 0x08) << 3; // Button LT, 8
+    btnkey |= (~P1 & 0x10) << 3; // Button RT, 7
+
+    packet1 |= (~P2 & 0x08) >> 3; // Button Select, 9
+    packet1 |= (~P2 & 0x04) >> 1; // Button Start, 10
+
+    // save left mouse button stat to bit 0 of first data byte
+    IN_PACKET[0] = btnkey;
+    IN_PACKET[1] = packet1;
+    IN_PACKET[2] = DPAD_MAPPING[~P2>>4];
+}
+
+void BuildRLInputReport()
+{
+    U8 btnkey = 0;
+    U8 packet1 = 0;
+
+    btnkey |= (~P2 & 0x02) >> 1; // Button X,  1
+    btnkey |= (~P1 & 0x80) >> 4; // Button Y,  4
+
+    btnkey |= (~P1 & 0x40) >> 4; // Button B,  3
+    btnkey |= (~P2 & 0x01) << 1; // Button A,  2
 
     btnkey |= (~P1 & 0x04) << 2; // Button LB, 5
     btnkey |= (~P1 & 0x20);      // Button RB, 6
