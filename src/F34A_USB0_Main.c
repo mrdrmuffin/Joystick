@@ -44,7 +44,10 @@
 void main(void)
 {
    System_Init ();
-   JOYSTICK_STYLE = P2;
+
+   REPORT_STYLE = ~P1;
+   DESCRIPTOR_STYLE = ~P2;
+
    USB0_Init ();
 
    IE_EA = 1;

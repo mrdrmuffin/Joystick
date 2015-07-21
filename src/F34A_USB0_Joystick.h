@@ -34,7 +34,8 @@ extern signed char MOUSE_VECTOR;
 extern U8 MOUSE_AXIS;
 extern U8 MOUSE_BUTTON;
 extern U8 IN_PACKET[4];
-extern U8 JOYSTICK_STYLE;
+extern U8 REPORT_STYLE;
+extern U8 DESCRIPTOR_STYLE;
 
 #define X_Axis 0
 #define Y_Axis 1

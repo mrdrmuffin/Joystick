@@ -38,11 +38,14 @@
 #include "F34A_USB0_InterruptServiceRoutine.h"
 #include "JoystickDescriptor.h"
 #include "F34A_USB0_ReportHandler.h"
+#include "F34A_USB0_Joystick.h"
 
 //-----------------------------------------------------------------------------
 // Variables
 //-----------------------------------------------------------------------------
-extern device_descriptor code DEVICEDESC;   // These are created in F342DC_USB0_Descriptor.h
+extern device_descriptor code SFJS_DEVICEDESC;   // These are created in F342DC_USB0_Descriptor.h
+extern device_descriptor code XBOX360_DEVICEDESC;   // These are created in F342DC_USB0_Descriptor.h
+extern device_descriptor code SILABS_DEVICEDESC;   // These are created in F342DC_USB0_Descriptor.h
 extern U8* STRINGDESCTABLE[];
 
 // Additional declarations for HID:
@@ -345,8 +348,20 @@ void Get_Descriptor (void)             // This routine sets the data pointer
    switch(SETUP.wValue.c[MSB])         // Determine which type of descriptor
    {                                   // was requested, and set data ptr and
       case DSC_DEVICE:                 // size accordingly
-         DATAPTR = (U8*) &DEVICEDESC;
-         DATASIZE = DEVICEDESC.bLength;
+          if(DESCRIPTOR_STYLE == 0x02)
+          {
+              DATAPTR = (U8*) &SFJS_DEVICEDESC;
+          }
+          else if(DESCRIPTOR_STYLE == 0x01)
+          {
+              DATAPTR = (U8*) &SILABS_DEVICEDESC;
+          }
+          else
+          {
+              DATAPTR = (U8*) &XBOX360_DEVICEDESC;
+          }
+
+         DATASIZE = XBOX360_DEVICEDESC.bLength;
          break;
 
       case DSC_CONFIG:

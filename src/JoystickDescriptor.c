@@ -39,7 +39,7 @@
 // Descriptor Declarations
 //-----------------------------------------------------------------------------
 
-const device_descriptor code DEVICEDESC =
+const device_descriptor code XBOX360_DEVICEDESC =
 {
    18,                                 // bLength
    0x01,                               // bDescriptorType
@@ -48,16 +48,44 @@ const device_descriptor code DEVICEDESC =
    0x03,                               // bDeviceSubClass
    0x00,                               // bDeviceProtocol
    EP0_PACKET_SIZE,                    // bMaxPacketSize0
-#if VENDOR == 1
-   0x3807,                             // idVendor
-   0x3847,                             // idProduct
-#elif VENDOR == 2
    0x045E,                             // idVendor
    0x028E,                             // idProduct
-#else
+   0x0000,                             // bcdDevice
+   0x01,                               // iManufacturer
+   0x02,                               // iProduct
+   0x00,                               // iSerialNumber
+   0x01                                // bNumConfigurations
+}; //end of DEVICEDESC
+
+const device_descriptor code SILABS_DEVICEDESC =
+{
+   18,                                 // bLength
+   0x01,                               // bDescriptorType
+   0x1101,                             // bcdUSB
+   0x03,                               // bDeviceClass
+   0x03,                               // bDeviceSubClass
+   0x00,                               // bDeviceProtocol
+   EP0_PACKET_SIZE,                    // bMaxPacketSize0
    0xC410,                             // idVendor
    0xB987,                             // idProduct
-#endif
+   0x0000,                             // bcdDevice
+   0x01,                               // iManufacturer
+   0x02,                               // iProduct
+   0x00,                               // iSerialNumber
+   0x01                                // bNumConfigurations
+}; //end of DEVICEDESC
+
+const device_descriptor code SFJS_DEVICEDESC =
+{
+   18,                                 // bLength
+   0x01,                               // bDescriptorType
+   0x1101,                             // bcdUSB
+   0x03,                               // bDeviceClass
+   0x03,                               // bDeviceSubClass
+   0x00,                               // bDeviceProtocol
+   EP0_PACKET_SIZE,                    // bMaxPacketSize0
+   0x3807,                             // idVendor
+   0x3847,                             // idProduct
    0x0000,                             // bcdDevice
    0x01,                               // iManufacturer
    0x02,                               // iProduct

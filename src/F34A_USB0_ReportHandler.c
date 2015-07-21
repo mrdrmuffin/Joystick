@@ -137,11 +137,11 @@ void IN_Report(void) {
 		pack = 0x01;
 	}
 
-	if(JOYSTICK_STYLE == 0xFB)
+	if(REPORT_STYLE == 0x80)
 	{
 	    BuildDInputReport();
 	}
-	else if(JOYSTICK_STYLE == 0xF7)
+	else if(REPORT_STYLE == 0x40)
 	{
 	    BuildRLInputReport();
 	}
