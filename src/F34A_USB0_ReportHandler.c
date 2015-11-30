@@ -137,7 +137,7 @@ void IN_Report(void) {
 		pack = 0x01;
 	}
 
-	if(REPORT_STYLE == 0x80)
+	/*if(REPORT_STYLE == 0x80)
 	{
 	    BuildDInputReport();
 	}
@@ -146,14 +146,11 @@ void IN_Report(void) {
 	    BuildRLInputReport();
 	}
     else
-	{
-        BuildXInputReport();
-	}
+	{*/
+    	BuildTestInputReport(); //BuildXInputReport();
+	//}
 
-	// point IN_BUFFER pointer to data packet and set
-	// IN_BUFFER length to transmit correct report size
-	IN_BUFFER.Ptr = IN_PACKET;
-	IN_BUFFER.Length = 4;
+
 
 }
 
@@ -173,6 +170,38 @@ void BuildXInputReport()
     IN_PACKET[0] = btnkey;
     IN_PACKET[1] = (~P1 & 0x18)>>3;
     IN_PACKET[2] = DPAD_MAPPING[~P2>>4];
+}
+
+void BuildTestInputReport()
+{
+    U8 btnkey = ~P2 & 0x1; //(~P2 & 0xF) | (~P1<<4);
+    U8 i = 0;
+
+    btnkey |= (~P1 & 0x40) >> 5; // Button B,  2
+    btnkey |= (~P2 & 0x02) << 1; // Button X,  3
+    btnkey |= (~P1 & 0x80) >> 4; // Button Y,  4
+    btnkey |= (~P1 & 0x04) << 2; // Button LB, 5
+    btnkey |= (~P1 & 0x20);      // Button RB, 6
+    btnkey |= (~P2 & 0x08) << 3; // Button BK, 7
+    btnkey |= (~P2 & 0x04) << 5; // Button ST, 8
+
+    // Buttons
+    IN_PACKET[i++] = btnkey;
+    IN_PACKET[i++] = (~P1 & 0x18)>>3;
+    // DPAD next
+    IN_PACKET[i++] = DPAD_MAPPING[~P2>>4];
+    // Next 4 packets are fake joysticks for now. In the future we might
+    // want to switch the joystick from dpad (hat) to the left or right
+    // joystick
+    IN_PACKET[i++] = 0x7F;
+    IN_PACKET[i++] = 0x7F;
+    IN_PACKET[i++] = 0x7F;
+    IN_PACKET[i++] = 0x7F;
+
+    // point IN_BUFFER pointer to data packet and set
+	// IN_BUFFER length to transmit correct report size
+	IN_BUFFER.Ptr = IN_PACKET;
+	IN_BUFFER.Length = i;
 }
 
 //void BuildXInputReport()

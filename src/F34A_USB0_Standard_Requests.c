@@ -46,6 +46,8 @@
 extern device_descriptor code SFJS_DEVICEDESC;   // These are created in F342DC_USB0_Descriptor.h
 extern device_descriptor code XBOX360_DEVICEDESC;   // These are created in F342DC_USB0_Descriptor.h
 extern device_descriptor code SILABS_DEVICEDESC;   // These are created in F342DC_USB0_Descriptor.h
+extern device_descriptor code USB20_DEVICEDESC;
+
 extern U8* STRINGDESCTABLE[];
 
 // Additional declarations for HID:
@@ -358,7 +360,7 @@ void Get_Descriptor (void)             // This routine sets the data pointer
           }
           else
           {
-              DATAPTR = (U8*) &XBOX360_DEVICEDESC;
+              DATAPTR = (U8*) &USB20_DEVICEDESC;//XBOX360_DEVICEDESC;
           }
 
          DATASIZE = XBOX360_DEVICEDESC.bLength;

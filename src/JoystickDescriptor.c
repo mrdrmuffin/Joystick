@@ -93,6 +93,24 @@ const device_descriptor code SFJS_DEVICEDESC =
    0x01                                // bNumConfigurations
 }; //end of DEVICEDESC
 
+const device_descriptor code USB20_DEVICEDESC =
+{
+   18,                                 // bLength
+   0x01,                               // bDescriptorType
+   0x0002,                             // bcdUSB
+   0x00,                               // bDeviceClass
+   0x00,                               // bDeviceSubClass
+   0x00,                               // bDeviceProtocol
+   EP0_PACKET_SIZE,                    // bMaxPacketSize0
+   0x3807,                             // idVendor
+   0x3847,                             // idProduct
+   0x0001,                             // bcdDevice
+   0x01,                               // iManufacturer
+   0x02,                               // iProduct
+   0x00,                               // iSerialNumber
+   0x01                                // bNumConfigurations
+}; //end of DEVICEDESC
+
 // From "USB Device Class Definition for Human Interface Devices (HID)".
 // Section 7.1:
 // "When a Get_Descriptor(Configuration) request is issued,
@@ -109,7 +127,7 @@ const hid_configuration_descriptor code HIDCONFIGDESC =
    0x01,                               // bConfigurationValue
    0x00,                               // iConfiguration
    0x80,                               // bmAttributes
-   0x20                                // MaxPower (in 2mA units)
+   0xFA                                // MaxPower (in 2mA units)
 },
 
 { // interface_descriptor hid_interface_descriptor
@@ -120,8 +138,8 @@ const hid_configuration_descriptor code HIDCONFIGDESC =
    0x01,                               // bNumEndpoints
    0x03,                               // bInterfaceClass (3 = HID)
    0x00,                               // bInterfaceSubClass
-   0x01,                               // bInterfaceProcotol
-   0x03                                // iInterface
+   0x00,                               // bInterfaceProcotol
+   0x00                                // iInterface
 },
 
 { // class_descriptor hid_descriptor
@@ -177,45 +195,113 @@ const hid_report_descriptor code HIDREPORTDESC =
     0xC0,                              //   End Collection (Physical)
     0xC0                               // End Collection (Application)*/
 
-        0x05, 0x01, // Usage Page, Generic Desktop
-                0x09, 0x05, // Usage, Gamepad
-                0xA1, 0x01, // Collection Application
-                    // Buttons (0x0A)
-                    0x05, 0x09, // Usage page button
-                    0x19, 0x01, // Usage Min, Button 1 (10 digital Buttons)
-                    0x29, 0x0A, // Usage Max, Button 10
-                    0x95, 0x0A, // Report Count, 10
-                    0x75, 0x01, // Report Size, 1
-                    0x81, 0x02, // Input, Variable
+	/*0x05, 0x01, // Usage Page, Generic Desktop
+    	0x09, 0x05, // Usage, Gamepad
+        	0xA1, 0x01, // Collection Application
+        		// Left and right joysticks. We use X and Y for the left joystick
+        		// and Z and Rz for the right joystick by traditional convention.
+        		// Each value is 1 byte, 0 - 255. We have 4 reports, one for each
+        		// axis on each joystick.
+        		0x09, 0x30, // Usage, JS direction X
+        		0x09, 0x31, // Usage, JS direction Y
+        		0x09, 0x32, // Usage, JS direction Z
+        		0x09, 0x35, // Usage, JS direction Rz (Rotate-Z)
+        		0x15, 0x00, // Logical Min (0)
+        		0x26, 0xFF, 0x00, // Logical Max (255) [2-byte logical max]
+        		0x75, 0x08,  // Report Size (8)
+        		0x95, 0x04,  // Report Count (4)
+        		// Padding or something? Look this up, copied from HORI FC4
+        		// report descriptor
+        		0x81, 0x02, // Input, Variable
+        		// DPAD
+				0x09, 0x39, // Usage, Hat Switch (DPAD)
+				0x15, 0x00, // Logical Min (0)
+				0x25, 0x07, // Logical Max (7)
+				0x35, 0x00, // Physical Min (0)
+				0x46, 0x3B, 0x01, // Physical Max (315)
+				0x65, 0x14,  // Unit
+				0x75, 0x04,  // Report Size (4)
+				0x95, 0x01,  // Report Count (1)
+				0x81, 0x42,  // Input (Variable, Null)
+				0x65, 0x00,  // Unit
+        		// Buttons (0A)
+				0x05, 0x09, // Usage page button
+				0x19, 0x01, // Usage Min, Button 1 (10 digital Buttons)
+				0x29, 0x0A, // Usage Max, Button 10
+				0x15, 0x00, // Logical Min (0)
+				0x25, 0x01, // Logical Max (1)
+				0x75, 0x01, // Report Size, 1
+				0x95, 0x0A, // Report Count, 10
+				0x81, 0x02, // Input, Variable
+				// Padding or something? Look this up, copied from HORI FC4
+				// report descriptor
+				0x06, 0x00, 0xFF, // Usage page
+				0x09, 0x20, // Usage data
+				// Button Padding
+				0x75, 0x02, // Report Size 2
+				0x95, 0x01, // Report Count 1
+				0x81, 0x02, // Input (constant)
+				// 3rd joystick? This one doesn't seem to be used on the FC4
+				0x05, 0x01, // Usage page button
+				0x09, 0x33, // Usage, JS direction Rx (Rotate-X)
+				0x09, 0x34, // Usage, JS direction Ry (Rotate-Y)
+				0x15, 0x00, // Logical Min (0)
+				0x26, 0xFF, 0x00, // Logical Max (255) [2-byte logical max]
+				0x75, 0x08, // Report Size 8
+				0x95, 0x02, // Report Count 1
+				// Alignment padding (DWORD alignment)
+				0x81, 0x02, // Input data
+				0x06, 0x00, 0xFF, // Usage page
+				0x09, 0x21, // Usage data
+				0x95, 0x36,  // Report Count (1)
 
-                    // Button Padding
-                    0x75, 0x06, // Report Size 6
-                    0x95, 0x01, // Report Count 1
-                    0x81, 0x03, // Input (constant)
+			0xC0 // End Collection*/
 
-                    // DPAD
-                    0x05, 0x01, // Usage Page, Generic Desktop
-                    0x09, 0x39, // Usage, Hat Switch (DPAD)
-                    0x15, 0x01, // Logical Min (1)
-                    0x25, 0x08, // Logical Max (8)
-                    0x35, 0x00, // Physical Min (0)
-                    0x46, 0x3B, 0x10, // Physical Max (315)
-                    0x66, 14, 00, // Unit
-                    0x75, 0x04,  // Report Size (4)
-                    0x95, 0x01,  // Report Count (1)
-                    0x81, 0x42,  // Input (Variable, Null)
-
-                    // DPAD Padding
-                    0x75, 0x04, // Report Size 4
-                    0x95, 0x01, // Report Count 1
-                    0x81, 0x03, // Input (constant)
-
-                    // Alignment padding (DWORD alignment)
-                    0x75, 0x08, // Report Size 8
-                    0x95, 0x01, // Report Count 1
-                    0x81, 0x03, // Input (constant)
-
-                0xC0 // End Collection
+		0x05, 0x01, // Usage Page, Generic Desktop
+		    	0x09, 0x05, // Usage, Gamepad
+		        	0xA1, 0x01, // Collection Application
+		        		// Buttons (0A)
+						0x05, 0x09, // Usage page button
+						0x19, 0x01, // Usage Min, Button 1 (10 digital Buttons)
+						0x29, 0x0A, // Usage Max, Button 10
+						0x15, 0x00, // Logical Min (0)
+						0x25, 0x01, // Logical Max (1)
+						0x75, 0x01, // Report Size, 1
+						0x95, 0x0A, // Report Count, 10
+						0x81, 0x02, // Input, Variable
+						// Button Padding
+						0x95, 0x06, // Report Count 6
+						0x81, 0x01, // Input (constant)
+						// DPAD
+						0x05, 0x01, // Usage Page, Generic Desktop
+						0x15, 0x01, // Logical Min (1)
+						0x25, 0x08, // Logical Max (8)
+						0x35, 0x00, // Physical Min (0)
+						0x46, 0x3B, 0x01, // Physical Max (315)
+						0x75, 0x04,  // Report Size (4)
+						0x95, 0x01,  // Report Count (1)
+						0x65, 0x14,  // Unit
+						0x09, 0x39,  // Usage, Hat Switch (DPAD)
+						0x81, 0x42,  // Input (Variable, Null)
+						// Padding
+						0x65, 0x00,  // Unit
+						0x95, 0x01, // Report Count 1
+						0x81, 0x01, // Input (constant)
+		        		// Left and right joysticks. We use X and Y for the left joystick
+		        		// and Z and Rz for the right joystick by traditional convention.
+		        		// Each value is 1 byte, 0 - 255. We have 4 reports, one for each
+		        		// axis on each joystick.
+		        		0x09, 0x30, // Usage, JS direction X
+		        		0x09, 0x31, // Usage, JS direction Y
+		        		0x09, 0x32, // Usage, JS direction Z
+		        		0x09, 0x35, // Usage, JS direction Rz (Rotate-Z)
+		        		0x15, 0x00, // Logical Min (0)
+		        		0x26, 0xFF, 0x00, // Logical Max (255) [2-byte logical max]
+						0x46, 0xFF, 0x00, // Physical Max (255)
+		        		0x75, 0x08,  // Report Size (8)
+		        		0x95, 0x04,  // Report Count (4)
+						0x81, 0x02, // Input, Variable
+					0xC0 // End Collection
 };
 
 #define STR0LEN 4
