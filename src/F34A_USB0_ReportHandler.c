@@ -176,6 +176,8 @@ void BuildTestInputReport()
 {
     U8 btnkey = ~P2 & 0x1; //(~P2 & 0xF) | (~P1<<4);
     U8 i = 0;
+    U8 stickmode = 1;
+    U8 stickstate = ~P2>>4;
 
     btnkey |= (~P1 & 0x40) >> 5; // Button B,  2
     btnkey |= (~P2 & 0x02) << 1; // Button X,  3
@@ -189,12 +191,56 @@ void BuildTestInputReport()
     IN_PACKET[i++] = btnkey;
     IN_PACKET[i++] = (~P1 & 0x18)>>3;
     // DPAD next
-    IN_PACKET[i++] = DPAD_MAPPING[~P2>>4];
+    if(stickmode == 0)
+    {
+    	IN_PACKET[i++] = DPAD_MAPPING[stickstate];
+    }
+    else
+    {
+    	IN_PACKET[i++] = 0;
+    }
     // Next 4 packets are fake joysticks for now. In the future we might
     // want to switch the joystick from dpad (hat) to the left or right
     // joystick
-    IN_PACKET[i++] = 0x7F;
-    IN_PACKET[i++] = 0x7F;
+    if(stickmode == 1)
+    {
+    	// TODO: Had to create temps here because the same operation inline wasn't working
+    	U8 temp = stickstate&0x08;
+    	U8 temp2 = stickstate&0x04;
+    	if(temp > 0)
+		{
+    		IN_PACKET[i++] = 0x00;
+		}
+		else if(temp2 > 0)
+		{
+			IN_PACKET[i++] = 0xFF;
+		}
+		else
+		{
+	    	IN_PACKET[i++] = 0x7F;
+		}
+
+    	temp = stickstate&0x01;
+    	temp2 = stickstate&0x02;
+    	if(temp > 0)
+    	{
+    		IN_PACKET[i++] = 0x00;
+    	}
+    	else if(temp2 > 0)
+    	{
+			IN_PACKET[i++] = 0xFF;
+    	}
+    	else
+    	{
+        	IN_PACKET[i++] = 0x7F;
+    	}
+    }
+    else
+    {
+    	IN_PACKET[i++] = 0x7F;
+    	IN_PACKET[i++] = 0x7F;
+    }
+
     IN_PACKET[i++] = 0x7F;
     IN_PACKET[i++] = 0x7F;
 

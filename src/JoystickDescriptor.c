@@ -293,14 +293,15 @@ const hid_report_descriptor code HIDREPORTDESC =
 		        		// axis on each joystick.
 		        		0x09, 0x30, // Usage, JS direction X
 		        		0x09, 0x31, // Usage, JS direction Y
-		        		0x09, 0x32, // Usage, JS direction Z
-		        		0x09, 0x35, // Usage, JS direction Rz (Rotate-Z)
+		        		0x09, 0x33, // Usage, JS direction Rx
+		        		0x09, 0x34, // Usage, JS direction Ry (Rotate-Z)
 		        		0x15, 0x00, // Logical Min (0)
-		        		0x26, 0xFF, 0x00, // Logical Max (255) [2-byte logical max]
-						0x46, 0xFF, 0x00, // Physical Max (255)
+		        		0x25, 0xFF, // Logical Max (255)
+						0x45, 0xFF, // Physical Max (255)
 		        		0x75, 0x08,  // Report Size (8)
 		        		0x95, 0x04,  // Report Count (4)
 						0x81, 0x02, // Input, Variable
+
 					0xC0 // End Collection
 };
 
